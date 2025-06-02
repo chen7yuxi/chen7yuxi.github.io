@@ -35,7 +35,7 @@
         nav.top-navigation {
             padding-top: 3rem; 
             padding-bottom: 3rem; 
-            text-align: left; 
+            text-align: center; /* Centering the navigation items */
         }
 
         .nav-link-main-home {
@@ -54,7 +54,8 @@
         
         #nav-dropdown-container {
             position: relative; 
-            display: inline-block; 
+            display: inline-block; /* Allows centering via parent's text-align */
+            text-align: left; /* Keep dropdown content left-aligned */
         }
 
         #sub-nav-links {
@@ -156,9 +157,23 @@
             navContainer.addEventListener('mouseleave', () => { if (window.innerWidth >= 768) hideMenu(); });
             subNav.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) clearTimeout(menuTimeoutId); });
             subNav.addEventListener('mouseleave', () => { if (window.innerWidth >= 768) hideMenu(); });
+            
             homeLink.addEventListener('click', (event) => {
-                if (window.innerWidth < 768) { event.preventDefault(); if (subNav.classList.contains('hidden')) showMenu(); else hideMenu(true); }
+                if (window.innerWidth < 768) { // Mobile specific behavior
+                    const isHidden = subNav.classList.contains('hidden');
+                    if (isHidden) {
+                        // Menu is closed, about to open it. Prevent navigation.
+                        event.preventDefault();
+                        showMenu();
+                    } else {
+                        // Menu is open. Clicking "HOME" again should navigate to index.html.
+                        // No preventDefault here. Let the link work.
+                        hideMenu(true); // Hide menu before navigating
+                    }
+                }
+                // For desktop, allow default navigation.
             });
+
             document.addEventListener('click', (event) => {
                 if (window.innerWidth < 768 && !navContainer.contains(event.target) && !subNav.classList.contains('hidden')) hideMenu(true);
             });

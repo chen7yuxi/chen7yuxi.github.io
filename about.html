@@ -35,7 +35,7 @@
         nav.top-navigation {
             padding-top: 3rem; 
             padding-bottom: 3rem; 
-            text-align: left; 
+            text-align: center; /* Centering the navigation items */
         }
 
         .nav-link-main-home {
@@ -54,12 +54,14 @@
         
         #nav-dropdown-container {
             position: relative; 
-            display: inline-block; 
+            display: inline-block; /* Allows centering via parent's text-align */
+            text-align: left; /* Keep dropdown content left-aligned */
         }
 
         #sub-nav-links {
             min-width: 10rem; 
             /* Tailwind: hidden absolute left-0 mt-1 w-auto shadow-lg bg-black ring-1 ring-gray-700 z-50 */
+            /* Removed rounded-md from previous versions, ensure it's not re-added if not desired */
         }
 
         .email-header {
@@ -74,6 +76,7 @@
             letter-spacing: 0.05em;
             margin-bottom: 2rem; 
             margin-top: 4rem; 
+            font-size: 1.25rem; /* Explicitly larger for section titles */
         }
         h2.section-title:first-of-type { 
             margin-top: 0; 
@@ -90,22 +93,29 @@
             color: #cccccc;
             margin-left: 0; 
         }
-        .education-item .sub-details { 
+        .education-item .sub-details a { /* Assuming styled-link class will be applied for consistency */
             color: #bbbbbb;
-            font-size: 0.9em; 
-            margin-left: 0; 
-            line-height: 1.6; 
-        }
-        .education-item .sub-details:not(:last-child) {
-            margin-bottom: 0.125rem; 
-        }
-        .education-item .sub-details a { 
-            color: #bbbbbb;
-            text-decoration: underline; 
+            /* text-decoration: underline; Let styled-link handle this */
         }
         .education-item .sub-details a:hover {
-            color: #ffffff;
+            /* color: #ffffff; Let styled-link handle this */
         }
+        a.styled-link { /* General styled link for consistency, if Knierim lab link needs it */
+            color: #bbbbbb;
+            text-decoration: none;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+        a.styled-link:hover {
+            color: #D90091;
+            text-decoration: underline;
+        }
+        .education-item dd a:not(.styled-link) { /* Fallback for Knierim Lab if not styled-link */
+             color: #bbbbbb; text-decoration: underline;
+        }
+         .education-item dd a:not(.styled-link):hover {
+             color: #ffffff;
+        }
+
 
          .interests-list li {
             margin-bottom: 0.5rem; 
@@ -116,7 +126,15 @@
             padding-left: 1.25rem; 
         }
         
-        /* Removed .cat-link-section styles as it's no longer a separate section */
+        .interests-list li a.cat-emoji-link { 
+             font-size: 1.5rem; 
+             text-decoration: none;
+             color: #ffffff;
+             transition: color 0.3s ease;
+        }
+        .interests-list li a.cat-emoji-link:hover {
+            color: #D90091;
+        }
 
         footer {
             padding-top: 4rem; 
@@ -163,7 +181,7 @@
                 <div class="education-item">
                     <dt>Johns Hopkins University</dt>
                     <dd>
-                        2019 - Present | Ph.D. Candidate in Neuroscience (<a href="https://sites.krieger.jhu.edu/knierim-lab/" target="_blank" rel="noopener noreferrer" class="hover:text-gray-100 transition-colors duration-300">Knierim Lab</a>)
+                        2019 - Present | Ph.D. Candidate in Neuroscience (<a href="https://sites.krieger.jhu.edu/knierim-lab/" target="_blank" rel="noopener noreferrer" class="styled-link">Knierim Lab</a>)
                     </dd>
                 </div>
                 <div class="education-item">
@@ -187,11 +205,11 @@
                 <li>spicy food</li>
                 <li>water sports</li>
                 <li>late-night deep talks</li> 
-                <li><a href="https://www.instagram.com/sammi__the__cat" target="_blank" rel="noopener noreferrer" title="Sammi the Cat on Instagram" class="text-2xl hover:text-[#D90091] transition-colors duration-300 no-underline">🐈</a></li>
+                <li><a href="https://www.instagram.com/sammi__the__cat" target="_blank" rel="noopener noreferrer" title="Sammi the Cat on Instagram" class="cat-emoji-link">🐈</a></li>
             </ul>
         </section>
         
-        </div>
+    </div>
 
     <footer class="content-section text-left py-6 relative z-10">
         <p>&copy; <span id="currentYearAbout"></span> Yuxi Chen. All rights reserved.</p>
@@ -208,7 +226,6 @@
             let menuTimeoutId; 
 
             if (!navContainer || !homeLink || !subNav) {
-                // console.error('Navigation elements not found.');
                 return;
             }
 
@@ -254,15 +271,21 @@
             });
 
             homeLink.addEventListener('click', (event) => {
-                if (window.innerWidth < 768) {
-                    event.preventDefault(); 
+                if (window.innerWidth < 768) { // Mobile specific behavior
                     const isHidden = subNav.classList.contains('hidden');
                     if (isHidden) {
+                        // Menu is closed, about to open it. Prevent navigation.
+                        event.preventDefault();
                         showMenu();
                     } else {
-                        hideMenu(true); 
+                        // Menu is open. Clicking "HOME" again should navigate to index.html.
+                        // No preventDefault here. Let the link work.
+                        // We can also explicitly hide the menu before navigation.
+                        hideMenu(true);
                     }
                 }
+                // For desktop, if it's a link (which it is), allow default navigation.
+                // The mouseenter/mouseleave handles menu visibility on desktop.
             });
 
             document.addEventListener('click', (event) => {
