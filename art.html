@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art - Yuxi Chen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: 300; /* Arial Light effect */
+            margin: 0;
+            font-size: 1.125rem; 
+            line-height: 1.7;   
+        }
+
+        h1, h2, h3, h4, h5, h6, p, a, span, div, li, dt, dd {
+            font-weight: 300;
+            font-size: inherit; 
+            line-height: inherit; 
+            text-align: left; 
+        }
+
+        .content-section {
+            max-width: 700px; 
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem; 
+            padding-right: 1.5rem;
+        }
+
+        /* Navigation Styles */
+        nav.top-navigation {
+            padding-top: 3rem; 
+            padding-bottom: 3rem; 
+            text-align: left; 
+        }
+
+        .nav-link-main-home {
+            color: #bbbbbb; 
+            transition: color 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 0.5rem 0; 
+            display: inline-block; 
+            position: relative; 
+        }
+        .nav-link-main-home:hover,
+        .nav-link-main-home:focus { 
+            color: #ffffff; 
+        }
+        
+        #nav-dropdown-container {
+            position: relative; 
+            display: inline-block; 
+        }
+
+        #sub-nav-links {
+            min-width: 10rem; 
+        }
+        
+        /* Unified hyperlink style (same as science.html) */
+        a.styled-link {
+            color: #bbbbbb; /* Default for general links */
+            text-decoration: none; /* No underline by default for these links */
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+        a.styled-link:hover {
+            color: #D90091; /* Magenta on hover */
+            text-decoration: underline; 
+        }
+
+
+        .bulleted-links {
+            list-style-type: disc; 
+            padding-left: 2.5rem; 
+            text-align: left; 
+        }
+        .bulleted-links li {
+            margin-bottom: 0.75rem; 
+        }
+
+
+        footer {
+            padding-top: 4rem; 
+            padding-bottom: 3rem; 
+        }
+        footer p {
+            color: #888888; 
+            margin-bottom: 0.5rem; 
+        }
+        footer p:last-child {
+            margin-bottom: 0;
+        }
+
+    </style>
+</head>
+<body class="font-light bg-black text-white leading-relaxed tracking-wide flex flex-col min-h-screen">
+
+    <nav class="top-navigation content-section">
+        <div id="nav-dropdown-container">
+            <a href="index.html" id="main-home-link" class="nav-link-main-home" aria-haspopup="true" aria-expanded="false">Home</a>
+            
+            <div id="sub-nav-links" class="hidden absolute left-0 mt-1 w-auto min-w-[10rem] shadow-lg bg-black ring-1 ring-gray-700 z-50" role="menu" aria-orientation="vertical" aria-labelledby="main-home-link">
+                <a href="art.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm bg-[#D90091] text-white uppercase transition-colors duration-200">ART</a>
+                <a href="science.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm text-gray-400 hover:bg-[#D90091] hover:text-white uppercase transition-colors duration-200">SCIENCE</a>
+                <a href="about.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm text-gray-400 hover:bg-[#D90091] hover:text-white uppercase transition-colors duration-200">ABOUT</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="content-section flex-grow py-10 md:py-16">
+        <div class="text-center pt-8 md:pt-12"> 
+            <p class="mb-6 text-lg">This page is currently under construction.</p>
+            <p class="mb-4">
+                In the meantime, you can view my work here:
+            </p>
+            <ul class="bulleted-links">
+                <li>
+                    <a href="https://www.yuxi-chen.com/photos.html" target="_blank" rel="noopener noreferrer" class="styled-link">photography</a>
+                </li>
+                <li>
+                    <a href="https://www.yuxi-chen.com/sketches.html" target="_blank" rel="noopener noreferrer" class="styled-link">sketches</a>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="content-section text-left py-6 relative z-10 mt-auto">
+        <p>&copy; <span id="currentYearArt"></span> Yuxi Chen. All rights reserved.</p>
+        <p>Powered by GitHub Pages & Tailwind CSS</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearArt').textContent = new Date().getFullYear();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navContainer = document.getElementById('nav-dropdown-container');
+            const homeLink = document.getElementById('main-home-link');
+            const subNav = document.getElementById('sub-nav-links');
+            let menuTimeoutId; 
+
+            if (!navContainer || !homeLink || !subNav) {
+                return;
+            }
+
+            function showMenu() { clearTimeout(menuTimeoutId); subNav.classList.remove('hidden'); homeLink.setAttribute('aria-expanded', 'true'); }
+            function hideMenu(immediate = false) {
+                if (immediate) { subNav.classList.add('hidden'); homeLink.setAttribute('aria-expanded', 'false'); } 
+                else { menuTimeoutId = setTimeout(() => { subNav.classList.add('hidden'); homeLink.setAttribute('aria-expanded', 'false'); }, 200); }
+            }
+
+            navContainer.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) showMenu(); });
+            navContainer.addEventListener('mouseleave', () => { if (window.innerWidth >= 768) hideMenu(); });
+            subNav.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) clearTimeout(menuTimeoutId); });
+            subNav.addEventListener('mouseleave', () => { if (window.innerWidth >= 768) hideMenu(); });
+            homeLink.addEventListener('click', (event) => {
+                if (window.innerWidth < 768) { event.preventDefault(); if (subNav.classList.contains('hidden')) showMenu(); else hideMenu(true); }
+            });
+            document.addEventListener('click', (event) => {
+                if (window.innerWidth < 768 && !navContainer.contains(event.target) && !subNav.classList.contains('hidden')) hideMenu(true);
+            });
+
+            const currentPageFilename = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('#sub-nav-links a').forEach(link => {
+                const linkFilename = link.getAttribute('href').split('/').pop();
+                link.classList.remove('bg-[#D90091]', 'text-white'); link.classList.add('text-gray-400'); 
+                if (linkFilename === currentPageFilename) { link.classList.add('bg-[#D90091]', 'text-white'); link.classList.remove('text-gray-400'); }
+            });
+        });
+    </script>
+</body>
+</html>

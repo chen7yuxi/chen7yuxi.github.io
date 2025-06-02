@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuxi Chen</title>
+    <title>Yuxi Chen 陈昱希</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
@@ -37,10 +37,10 @@
             right: 10vw; 
             z-index: 10;
         }
-        .profile-pic-header-link, .name-header-link { /* Classes for the new <a> tags */
-            text-decoration: none; /* Remove underline from links */
-            color: inherit; /* Inherit color from parent */
-            display: block; /* Ensure links behave as blocks if needed */
+        .profile-pic-header-link, .name-header-link {
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
         }
         .profile-pic-header {
             border-radius: 50%;
@@ -76,7 +76,7 @@
             justify-content: space-between;
             align-items: center;
             position: absolute;
-            bottom: 10vh; 
+            bottom: 15vh; /* Increased from 10vh */
             left: 10vw;   
             right: 10vw;  
             z-index: 10;
@@ -113,7 +113,7 @@
 
         #animationControlButton { 
             position: fixed;
-            bottom: calc(10vh + 4rem); 
+            bottom: calc(15vh + 3.5rem); /* Adjusted to be above new bottom-nav position */
             left: 50%;
             transform: translateX(-50%);
             padding: 0.5rem 0; 
@@ -141,12 +141,13 @@
             z-index: 9999; /* Highest z-index */
             display: none;
             opacity: 0;
-            pointer-events: none; /* Allow clicks through if it somehow stays visible */
+            pointer-events: none; 
         }
     </style>
 </head>
 <body class="leading-normal tracking-normal font-light">
-<div id="pageFlashEffect"></div> <main id="home">
+<div id="pageFlashEffect"></div> 
+<main id="home">
     <header class="top-header">
         <a href="about.html" class="profile-pic-header-link flash-link">
             <img src="./assets/images/profile.jpg" alt="Yuxi Chen - About"
@@ -170,7 +171,7 @@
 
 <footer class="bg-black text-center py-3">
     <p class="text-gray-300 text-xs">&copy; <span id="currentYear"></span> Yuxi Chen. All rights reserved.</p>
-    <p class="text-xs text-gray-300"><a href="https://en.wikipedia.org/wiki/List_of_chaotic_maps" target="_blank" rel="noopener noreferrer">Chaotic Systems Inspiration</a></p>
+    <p class="text-xs text-gray-300"><a href="https://en.wikipedia.org/wiki/List_of_chaotic_maps" target="_blank" rel="noopener noreferrer">Chaotic Systems</a></p>
     <p class="text-xs text-gray-300">Powered by GitHub Pages & Tailwind CSS</p>
 </footer>
 
@@ -209,21 +210,20 @@
             const targetUrl = this.href;
 
             flashEffectElement.style.display = 'block';
-            // Force reflow to ensure display:block is applied before opacity transition starts
-            flashEffectElement.offsetHeight; // eslint-disable-line no-unused-expressions 
+            flashEffectElement.offsetHeight; 
             
-            flashEffectElement.style.transition = 'opacity 0.05s ease-out'; // Quick fade in
+            flashEffectElement.style.transition = 'opacity 0.05s ease-out'; 
             flashEffectElement.style.opacity = '1';
 
             setTimeout(() => {
-                flashEffectElement.style.transition = 'opacity 0.15s ease-in'; // Slightly slower fade out
+                flashEffectElement.style.transition = 'opacity 0.15s ease-in'; 
                 flashEffectElement.style.opacity = '0';
-            }, 50); // Duration flash is fully visible
+            }, 50); 
 
             setTimeout(() => {
                 flashEffectElement.style.display = 'none';
                 window.location.href = targetUrl;
-            }, 200); // Total time for flash effect (50ms visible + 150ms fade out)
+            }, 200); 
         });
     });
 

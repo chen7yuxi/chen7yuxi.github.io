@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Yuxi Chen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: 300; /* Arial Light effect */
+            margin: 0;
+            font-size: 1.125rem; 
+            line-height: 1.7;   
+        }
+
+        h1, h2, h3, h4, h5, h6, p, a, span, div, li, dt, dd {
+            font-weight: 300;
+            font-size: inherit; 
+            line-height: inherit; 
+            text-align: left; 
+        }
+
+        .content-section {
+            max-width: 700px; 
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem; 
+            padding-right: 1.5rem;
+        }
+
+        /* Navigation Styles */
+        nav.top-navigation {
+            padding-top: 3rem; 
+            padding-bottom: 3rem; 
+            text-align: left; 
+        }
+
+        .nav-link-main-home {
+            color: #bbbbbb; 
+            transition: color 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 0.5rem 0; 
+            display: inline-block; 
+            position: relative; 
+        }
+        .nav-link-main-home:hover,
+        .nav-link-main-home:focus { 
+            color: #ffffff; 
+        }
+        
+        #nav-dropdown-container {
+            position: relative; 
+            display: inline-block; 
+        }
+
+        #sub-nav-links {
+            min-width: 10rem; 
+            /* Tailwind: hidden absolute left-0 mt-1 w-auto shadow-lg bg-black ring-1 ring-gray-700 z-50 */
+        }
+
+        .email-header {
+            text-transform: lowercase; 
+            letter-spacing: 0.025em; 
+            margin-bottom: 3rem; 
+            color: #ffffff; 
+        }
+
+        h2.section-title { 
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem; 
+            margin-top: 4rem; 
+        }
+        h2.section-title:first-of-type { 
+            margin-top: 0; 
+        }
+
+        .education-item { 
+            margin-bottom: 1.5rem; 
+        }
+        .education-item dt { 
+            color: #ffffff; 
+            margin-bottom: 0.25rem; 
+        }
+        .education-item dd { 
+            color: #cccccc;
+            margin-left: 0; 
+        }
+        .education-item .sub-details { 
+            color: #bbbbbb;
+            font-size: 0.9em; 
+            margin-left: 0; 
+            line-height: 1.6; 
+        }
+        .education-item .sub-details:not(:last-child) {
+            margin-bottom: 0.125rem; 
+        }
+        .education-item .sub-details a { 
+            color: #bbbbbb;
+            text-decoration: underline; 
+        }
+        .education-item .sub-details a:hover {
+            color: #ffffff;
+        }
+
+         .interests-list li {
+            margin-bottom: 0.5rem; 
+            list-style-position: outside; 
+            padding-left: 0; 
+        }
+        .interests-list {
+            padding-left: 1.25rem; 
+        }
+        
+        /* Removed .cat-link-section styles as it's no longer a separate section */
+
+        footer {
+            padding-top: 4rem; 
+            padding-bottom: 3rem; 
+        }
+        footer p {
+            color: #888888; 
+            margin-bottom: 0.5rem; 
+        }
+        footer p:last-child {
+            margin-bottom: 0;
+        }
+
+    </style>
+</head>
+<body class="font-light bg-black text-white leading-relaxed tracking-wide">
+
+    <nav class="top-navigation content-section">
+        <div id="nav-dropdown-container">
+            <a href="index.html" id="main-home-link" class="nav-link-main-home" aria-haspopup="true" aria-expanded="false">Home</a>
+            
+            <div id="sub-nav-links" class="hidden absolute left-0 mt-1 w-auto min-w-[10rem] shadow-lg bg-black ring-1 ring-gray-700 z-50" role="menu" aria-orientation="vertical" aria-labelledby="main-home-link">
+                <a href="art.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm text-gray-400 hover:bg-[#D90091] hover:text-white uppercase transition-colors duration-200">ART</a>
+                <a href="science.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm text-gray-400 hover:bg-[#D90091] hover:text-white uppercase transition-colors duration-200">SCIENCE</a>
+                <a href="about.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm bg-[#D90091] text-white uppercase transition-colors duration-200">ABOUT</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-section pb-12 md:pb-16">
+        <header class="mb-10 md:mb-12">
+            <h1 class="email-header">ychen315 at jh.edu</h1>
+        </header>
+
+        <section class="mb-10 md:mb-16">
+            <p>
+                I was born and raised in Shandong, China. Growing up, I've thought about many different career possibilities, including fashion, art, and journalism. Then I stumbled upon neuroscience. This field is so fascinating that I had to break a promise I made to myself - never become a scientist!
+            </p>
+        </section>
+
+        <section class="mb-10 md:mb-16">
+            <h2 class="section-title">Education</h2>
+            <dl>
+                <div class="education-item">
+                    <dt>Johns Hopkins University</dt>
+                    <dd>
+                        2019 - Present | Ph.D. Candidate in Neuroscience (<a href="https://sites.krieger.jhu.edu/knierim-lab/" target="_blank" rel="noopener noreferrer" class="hover:text-gray-100 transition-colors duration-300">Knierim Lab</a>)
+                    </dd>
+                </div>
+                <div class="education-item">
+                    <dt>Johns Hopkins University</dt>
+                    <dd>2017 - 2019 | B.S. in Neuroscience</dd>
+                </div>
+                <div class="education-item">
+                    <dt>University of California, Los Angeles</dt>
+                    <dd>2015 - 2017 | Neuroscience & Bioinformatics</dd>
+                </div>
+                <div class="education-item">
+                    <dt>山东省实验中学 (Shandong Experimental High School)</dt>
+                    <dd>2012 - 2015</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="mb-10 md:mb-16">
+            <h2 class="section-title">And I'm always down for...</h2>
+            <ul class="interests-list list-disc">
+                <li>spicy food</li>
+                <li>water sports</li>
+                <li>late-night deep talks</li> 
+                <li><a href="https://www.instagram.com/sammi__the__cat" target="_blank" rel="noopener noreferrer" title="Sammi the Cat on Instagram" class="text-2xl hover:text-[#D90091] transition-colors duration-300 no-underline">🐈</a></li>
+            </ul>
+        </section>
+        
+        </div>
+
+    <footer class="content-section text-left py-6 relative z-10">
+        <p>&copy; <span id="currentYearAbout"></span> Yuxi Chen. All rights reserved.</p>
+        <p>Powered by GitHub Pages & Tailwind CSS</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearAbout').textContent = new Date().getFullYear();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navContainer = document.getElementById('nav-dropdown-container');
+            const homeLink = document.getElementById('main-home-link');
+            const subNav = document.getElementById('sub-nav-links');
+            let menuTimeoutId; 
+
+            if (!navContainer || !homeLink || !subNav) {
+                // console.error('Navigation elements not found.');
+                return;
+            }
+
+            function showMenu() {
+                clearTimeout(menuTimeoutId); 
+                subNav.classList.remove('hidden');
+                homeLink.setAttribute('aria-expanded', 'true');
+            }
+
+            function hideMenu(immediate = false) {
+                if (immediate) {
+                    subNav.classList.add('hidden');
+                    homeLink.setAttribute('aria-expanded', 'false');
+                } else {
+                    menuTimeoutId = setTimeout(() => {
+                        subNav.classList.add('hidden');
+                        homeLink.setAttribute('aria-expanded', 'false');
+                    }, 200);
+                }
+            }
+
+            navContainer.addEventListener('mouseenter', () => {
+                if (window.innerWidth >= 768) { 
+                    showMenu();
+                }
+            });
+
+            navContainer.addEventListener('mouseleave', () => {
+                if (window.innerWidth >= 768) {
+                    hideMenu();
+                }
+            });
+            
+            subNav.addEventListener('mouseenter', () => {
+                 if (window.innerWidth >= 768) {
+                    clearTimeout(menuTimeoutId); 
+                 }
+            });
+             subNav.addEventListener('mouseleave', () => { 
+                 if (window.innerWidth >= 768) {
+                    hideMenu();
+                 }
+            });
+
+            homeLink.addEventListener('click', (event) => {
+                if (window.innerWidth < 768) {
+                    event.preventDefault(); 
+                    const isHidden = subNav.classList.contains('hidden');
+                    if (isHidden) {
+                        showMenu();
+                    } else {
+                        hideMenu(true); 
+                    }
+                }
+            });
+
+            document.addEventListener('click', (event) => {
+                if (window.innerWidth < 768) { 
+                    if (!navContainer.contains(event.target) && !subNav.classList.contains('hidden')) {
+                        hideMenu(true); 
+                    }
+                }
+            });
+
+            const currentPageFilename = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('#sub-nav-links a');
+
+            navLinks.forEach(link => {
+                const linkFilename = link.getAttribute('href').split('/').pop();
+                link.classList.remove('bg-[#D90091]', 'text-white'); 
+                link.classList.add('text-gray-400'); 
+
+                if (linkFilename === currentPageFilename) {
+                    link.classList.add('bg-[#D90091]', 'text-white'); 
+                    link.classList.remove('text-gray-400'); 
+                }
+            });
+        });
+    </script>
+</body>
+</html>

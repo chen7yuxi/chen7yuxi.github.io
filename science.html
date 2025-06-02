@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science - Yuxi Chen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: 300; 
+            margin: 0;
+            font-size: 1.125rem; 
+            line-height: 1.7;   
+        }
+
+        h1, h2, h3, h4, h5, h6, p, a, span, div, li, dt, dd, canvas {
+            font-weight: 300;
+            font-size: inherit; 
+            line-height: inherit; 
+            text-align: left; 
+        }
+
+        .content-section {
+            max-width: 700px; 
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem; 
+            padding-right: 1.5rem;
+        }
+
+        nav.top-navigation {
+            padding-top: 3rem; 
+            padding-bottom: 3rem; 
+            text-align: left; 
+        }
+
+        .nav-link-main-home {
+            color: #bbbbbb; 
+            transition: color 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 0.5rem 0; 
+            display: inline-block; 
+            position: relative; 
+        }
+        .nav-link-main-home:hover,
+        .nav-link-main-home:focus { 
+            color: #ffffff; 
+        }
+        
+        #nav-dropdown-container {
+            position: relative; 
+            display: inline-block; 
+        }
+
+        #sub-nav-links {
+            min-width: 10rem; 
+        }
+        
+        .section-title {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem; 
+            margin-top: 3rem; 
+            font-size: 1.25rem; 
+        }
+        main > section:first-of-type > .section-title, 
+        main > section:first-of-type {
+             margin-top: 1rem; 
+        }
+
+        .publication-item {
+            margin-bottom: 2rem;
+        }
+        .publication-title { 
+            font-weight: 400; 
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+        
+        /* Unified hyperlink style */
+        a.styled-link {
+            color: #bbbbbb; /* Default for general links */
+            text-decoration: none; 
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+        /* Specific default color for publication titles */
+        .publication-title a.styled-link {
+            color: #ffffff; /* Publication titles are white by default */
+        }
+        /* Universal hover effect for all styled-links */
+        a.styled-link:hover {
+            color: #D90091; /* Magenta on hover */
+            text-decoration: underline; 
+        }
+
+        .publication-authors {
+            color: #cccccc;
+            margin-bottom: 0.25rem;
+            font-size: 0.95em;
+        }
+        .publication-journal {
+            color: #bbbbbb;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+
+        .links-section {
+            padding-top: 1rem; 
+            margin-bottom: 2rem; 
+        }
+
+        #interests-animation-canvas {
+            width: 100%;
+            height: 263px; /* Updated height: 350px * 0.75 */
+            background-color: transparent; 
+            margin-bottom: 2rem;
+            border-radius: 0.375rem; 
+        }
+
+        footer {
+            padding-top: 4rem; 
+            padding-bottom: 3rem; 
+        }
+        footer p {
+            color: #888888; 
+            margin-bottom: 0.5rem; 
+        }
+        footer p:last-child {
+            margin-bottom: 0;
+        }
+
+    </style>
+</head>
+<body class="font-light bg-black text-white leading-relaxed tracking-wide flex flex-col min-h-screen">
+
+    <nav class="top-navigation content-section">
+        <div id="nav-dropdown-container">
+            <a href="index.html" id="main-home-link" class="nav-link-main-home" aria-haspopup="true" aria-expanded="false">Home</a>
+            
+            <div id="sub-nav-links" class="hidden absolute left-0 mt-1 w-auto min-w-[10rem] shadow-lg bg-black ring-1 ring-gray-700 z-50" role="menu" aria-orientation="vertical" aria-labelledby="main-home-link">
+                <a href="art.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm text-gray-400 hover:bg-[#D90091] hover:text-white uppercase transition-colors duration-200">ART</a>
+                <a href="science.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm bg-[#D90091] text-white uppercase transition-colors duration-200">SCIENCE</a>
+                <a href="about.html" role="menuitem" class="nav-dropdown-item block px-3 py-2 text-sm text-gray-400 hover:bg-[#D90091] hover:text-white uppercase transition-colors duration-200">ABOUT</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="content-section flex-grow py-10 md:py-16">
+        <section class="links-section">
+            <p><a href="./assets/files/cv_2505.pdf" target="_blank" rel="noopener noreferrer" class="styled-link">CV</a></p> 
+            <p><a href="https://scholar.google.com/citations?user=AS1DwcIAAAAJ" target="_blank" rel="noopener noreferrer" class="styled-link">Google Scholar</a></p>
+        </section>
+        
+        <section id="current-interests-section">
+            <h2 class="section-title">Current Interests</h2>
+            <canvas id="interests-animation-canvas"></canvas>
+        </section>
+
+        <section id="publications-section">
+            <h2 class="section-title">Publications</h2>
+            <div class="publication-item">
+                <h3 class="publication-title">
+                    <a href="https://onlinelibrary.wiley.com/doi/am-pdf/10.1002/hipo.23591" target="_blank" rel="noopener noreferrer" class="styled-link">Object‐place‐context learning impairment correlates with spatial learning impairment in aged Long–Evans rats</a>
+                </h3>
+                <p class="publication-authors">Chen, Y., Branch, A., Shuai, C., Gallagher, M., Knierim, J. J.</p>
+                <p class="publication-journal">Hippocampus, 2024</p>
+            </div>
+
+            <div class="publication-item">
+                <h3 class="publication-title">
+                    <a href="https://www.nature.com/articles/s41586-022-04478-7" target="_blank" rel="noopener noreferrer" class="styled-link">Cortical processing of flexible and context-dependent sensorimotor sequences</a>
+                </h3>
+                <p class="publication-authors">Xu, D., Dong, M., Chen, Y., Delgado, A. M., Hughes, N. C., Zhang, L., & O’Connor, D. H.</p>
+                <p class="publication-journal">Nature, 2022</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="content-section text-left py-6 relative z-10 mt-auto">
+        <p>&copy; <span id="currentYearScience"></span> Yuxi Chen. All rights reserved.</p>
+        <p>Powered by GitHub Pages & Tailwind CSS</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearScience').textContent = new Date().getFullYear();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navContainer = document.getElementById('nav-dropdown-container');
+            const homeLink = document.getElementById('main-home-link');
+            const subNav = document.getElementById('sub-nav-links');
+            let menuTimeoutId; 
+
+            if (!navContainer || !homeLink || !subNav) { return; }
+
+            function showMenu() { clearTimeout(menuTimeoutId); subNav.classList.remove('hidden'); homeLink.setAttribute('aria-expanded', 'true'); }
+            function hideMenu(immediate = false) {
+                if (immediate) { subNav.classList.add('hidden'); homeLink.setAttribute('aria-expanded', 'false'); } 
+                else { menuTimeoutId = setTimeout(() => { subNav.classList.add('hidden'); homeLink.setAttribute('aria-expanded', 'false'); }, 200); }
+            }
+
+            navContainer.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) showMenu(); });
+            navContainer.addEventListener('mouseleave', () => { if (window.innerWidth >= 768) hideMenu(); });
+            subNav.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) clearTimeout(menuTimeoutId); });
+            subNav.addEventListener('mouseleave', () => { if (window.innerWidth >= 768) hideMenu(); });
+            homeLink.addEventListener('click', (event) => {
+                if (window.innerWidth < 768) { event.preventDefault(); if (subNav.classList.contains('hidden')) showMenu(); else hideMenu(true); }
+            });
+            document.addEventListener('click', (event) => {
+                if (window.innerWidth < 768 && !navContainer.contains(event.target) && !subNav.classList.contains('hidden')) hideMenu(true);
+            });
+
+            const currentPageFilename = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('#sub-nav-links a').forEach(link => {
+                const linkFilename = link.getAttribute('href').split('/').pop();
+                link.classList.remove('bg-[#D90091]', 'text-white'); link.classList.add('text-gray-400');
+                if (linkFilename === currentPageFilename) { link.classList.add('bg-[#D90091]', 'text-white'); link.classList.remove('text-gray-400'); }
+            });
+
+            const canvas = document.getElementById('interests-animation-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                const interests = ["episodic memory", "schema learning", "aging", "cognitive decline", "entorhinal cortex", "individual differences"];
+                let textObjects = [];
+                const baseFontSize = 18; 
+                const ballRadius = 24; 
+                const ballSpacing = 10; 
+                const movementSpeedMultiplier = 3; // Updated speed: 4 * 0.75 = 3
+
+                function getColorForIndex(index, totalItems) {
+                    const startHue = 180; 
+                    const endHue = 300;   
+                    const hueRange = endHue - startHue;
+                    const hue = startHue + (totalItems > 1 ? (hueRange * (index / (totalItems - 1))) : 0);
+                    return `hsl(${hue}, 100%, 60%)`; 
+                }
+
+                function resizeCanvas() {
+                    canvas.width = canvas.clientWidth;
+                    canvas.height = canvas.clientHeight; 
+                    if (canvas.width > 0 && canvas.height > 0) { 
+                        initializeTextObjects(); 
+                    }
+                }
+
+                function initializeTextObjects() {
+                    textObjects = []; 
+                    if (!ctx || canvas.width === 0 || canvas.height === 0) return; 
+                    
+                    ctx.font = `${baseFontSize}px Arial`; 
+
+                    interests.forEach((text, index) => {
+                        const metrics = ctx.measureText(text);
+                        const textWidth = metrics.width;
+                        const textHeight = baseFontSize * 1.2; 
+
+                        const objectVisualWidth = Math.max(textWidth, ballRadius * 2);
+                        const objectVisualHeight = textHeight + ballSpacing + ballRadius * 2;
+
+                        let initialTextX, initialTextY;
+
+                        if (canvas.width >= objectVisualWidth) {
+                            const minTextX = (objectVisualWidth / 2) - (textWidth / 2);
+                            const maxTextX = canvas.width - (objectVisualWidth / 2) - (textWidth / 2);
+                            initialTextX = minTextX + (maxTextX > minTextX ? Math.random() * (maxTextX - minTextX) : 0);
+                        } else {
+                            initialTextX = (canvas.width - textWidth) / 2;
+                        }
+
+                        if (canvas.height >= objectVisualHeight) {
+                            const minTextY = 0; 
+                            const maxTextY = canvas.height - objectVisualHeight;
+                            initialTextY = minTextY + (maxTextY > minTextY ? Math.random() * (maxTextY - minTextY) : 0);
+                        } else {
+                            initialTextY = (canvas.height - objectVisualHeight) / 2;
+                             if (initialTextY < 0) initialTextY = 0; 
+                        }
+                        
+                        textObjects.push({
+                            text: text,
+                            x: initialTextX, 
+                            y: initialTextY, 
+                            vx: (Math.random() - 0.5) * movementSpeedMultiplier,
+                            vy: (Math.random() - 0.5) * movementSpeedMultiplier,
+                            textWidth: textWidth,
+                            textHeight: textHeight,
+                            color: getColorForIndex(index, interests.length), 
+                            ballRadius: ballRadius,
+                        });
+                    });
+                }
+                
+                function draw() {
+                    if (!ctx || !canvas || canvas.width === 0 || canvas.height === 0) {
+                        requestAnimationFrame(draw); 
+                        return;
+                    }
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = `${baseFontSize}px Arial`; 
+                    ctx.textAlign = 'center'; 
+                    ctx.textBaseline = 'bottom'; 
+
+                    textObjects.forEach((obj, idx) => {
+                        obj.x += obj.vx;
+                        obj.y += obj.vy;
+
+                        const ballCenterX = obj.x + obj.textWidth / 2; 
+                        const ballCenterY = obj.y + obj.textHeight + ballSpacing + obj.ballRadius;
+
+                        if (ballCenterX - obj.ballRadius < 0) { 
+                            obj.vx *= -1;
+                            obj.x = obj.ballRadius - obj.textWidth / 2; 
+                        } else if (ballCenterX + obj.ballRadius > canvas.width) { 
+                            obj.vx *= -1;
+                            obj.x = canvas.width - obj.ballRadius - obj.textWidth / 2; 
+                        }
+                        
+                        if (obj.y < 0) { 
+                            obj.vy *= -1;
+                            obj.y = 0; 
+                        } 
+                        else if (ballCenterY + obj.ballRadius > canvas.height) {
+                            obj.vy *= -1;
+                            obj.y = canvas.height - (obj.ballRadius * 2 + ballSpacing + obj.textHeight); 
+                        }
+                        
+                        for (let i = idx + 1; i < textObjects.length; i++) {
+                            const other = textObjects[i];
+                            const otherBallCenterX = other.x + other.textWidth / 2;
+                            const otherBallCenterY = other.y + other.textHeight + ballSpacing + other.ballRadius;
+
+                            const dx = ballCenterX - otherBallCenterX;
+                            const dy = ballCenterY - otherBallCenterY;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            const minDistance = obj.ballRadius + other.ballRadius;
+
+                            if (distance > 0 && distance < minDistance) { 
+                                const tempVx = obj.vx; const tempVy = obj.vy;
+                                obj.vx = other.vx; obj.vy = other.vy;
+                                other.vx = tempVx; other.vy = tempVy;
+
+                                const overlap = minDistance - distance;
+                                const ax = dx / distance; 
+                                const ay = dy / distance;
+                                
+                                const moveX = ax * overlap / 2;
+                                const moveY = ay * overlap / 2;
+
+                                obj.x += moveX; 
+                                obj.y += moveY;
+                                other.x -= moveX;
+                                other.y -= moveY;
+                            }
+                        }
+
+                        // Draw base ball
+                        ctx.beginPath();
+                        ctx.arc(ballCenterX, ballCenterY, obj.ballRadius, 0, Math.PI * 2);
+                        ctx.fillStyle = obj.color;
+                        ctx.fill();
+                        ctx.closePath();
+
+                        // Draw flat teardrop-like highlight
+                        ctx.beginPath();
+                        const highlightOffsetX = -obj.ballRadius * 0.25; 
+                        const highlightOffsetY = -obj.ballRadius * 0.35; 
+                        const highlightRadiusX = obj.ballRadius * 0.25;  
+                        const highlightRadiusY = obj.ballRadius * 0.45;  
+                        const highlightRotation = Math.PI / 7;          
+
+                        ctx.ellipse(
+                            ballCenterX + highlightOffsetX, 
+                            ballCenterY + highlightOffsetY, 
+                            highlightRadiusX, 
+                            highlightRadiusY, 
+                            highlightRotation, 
+                            0, 
+                            2 * Math.PI
+                        );
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.70)'; 
+                        ctx.fill();
+                        ctx.closePath();
+
+                        // Draw text
+                        ctx.fillStyle = obj.color; 
+                        ctx.fillText(obj.text, obj.x + obj.textWidth / 2, obj.y + obj.textHeight); 
+                    });
+
+                    requestAnimationFrame(draw);
+                }
+                
+                window.addEventListener('resize', resizeCanvas);
+                if (canvas.clientWidth > 0 && canvas.clientHeight > 0) {
+                    resizeCanvas(); 
+                    draw();
+                } else {
+                    setTimeout(() => {
+                        if (canvas.clientWidth > 0 && canvas.clientHeight > 0) {
+                           resizeCanvas();
+                           draw();
+                        }
+                    }, 100); 
+                }
+            }
+        });
+    </script>
+</body>
+</html>
