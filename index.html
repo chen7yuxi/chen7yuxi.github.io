@@ -1,1 +1,438 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuxi Chen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: 300; /* Arial Light effect */
+            overflow: hidden; /* Prevent scrollbars */
+            margin: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6, p, a, span, div {
+            font-weight: 300;
+        }
+
+        #home {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 10vh; 
+            left: 10vw; 
+            right: 10vw; 
+            z-index: 10;
+        }
+        .profile-pic-header-link, .name-header-link { /* Classes for the new <a> tags */
+            text-decoration: none; /* Remove underline from links */
+            color: inherit; /* Inherit color from parent */
+            display: block; /* Ensure links behave as blocks if needed */
+        }
+        .profile-pic-header {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .name-header {
+            text-align: right;
+        }
+        .name-header .name-main,
+        .name-header .name-sub {
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        #trajectoryContainer {
+            flex-grow: 1;
+            width: 100%; 
+            height: 100%; 
+            position: absolute; 
+            top: 0; 
+            left: 0;
+            z-index: 1;
+        }
+         #trajectoryContainer canvas {
+            display: block;
+            width: 100% !important; 
+            height: 100% !important;
+        }
+
+
+        .bottom-nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            bottom: 10vh; 
+            left: 10vw;   
+            right: 10vw;  
+            z-index: 10;
+        }
+        .bottom-nav-container a.nav-action-link {
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+            color: #bbbbbb;
+            transition: color 0.3s ease;
+            font-weight: 300;
+            text-decoration: none;
+        }
+        .bottom-nav-container a.nav-action-link:hover {
+            color: #ffffff;
+        }
+
+        footer {
+            background-color: #000000;
+            color: #dddddd;
+            font-weight: 300;
+            text-align: center;
+            padding: 0.75rem;
+            position: relative; 
+            z-index: 5; 
+        }
+        footer a {
+            color: #bbbbbb;
+            font-weight: 300;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #ffffff;
+        }
+
+        #animationControlButton { 
+            position: fixed;
+            bottom: calc(10vh + 4rem); 
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 0; 
+            background-color: transparent; 
+            color: #bbbbbb; 
+            border: none; 
+            cursor: pointer;
+            z-index: 100;
+            font-weight: 300;
+            font-size: 1rem; 
+            text-transform: uppercase;
+        }
+        #animationControlButton:hover {
+            color: #ffffff;
+        }
+
+        /* Flash Effect Overlay */
+        #pageFlashEffect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            z-index: 9999; /* Highest z-index */
+            display: none;
+            opacity: 0;
+            pointer-events: none; /* Allow clicks through if it somehow stays visible */
+        }
+    </style>
+</head>
+<body class="leading-normal tracking-normal font-light">
+<div id="pageFlashEffect"></div> <main id="home">
+    <header class="top-header">
+        <a href="about.html" class="profile-pic-header-link flash-link">
+            <img src="./assets/images/profile.jpg" alt="Yuxi Chen - About"
+                 class="profile-pic-header w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28">
+        </a>
+        <a href="about.html" class="name-header-link flash-link">
+            <div class="name-header text-right">
+                <h1 class="name-main text-2xl sm:text-3xl md:text-4xl lg:text-5xl">Yuxi Chen</h1>
+                <h1 class="name-sub text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-0">陈昱希</h1>
+            </div>
+        </a>
+    </header>
+
+    <div id="trajectoryContainer"></div>
+    <button id="animationControlButton">PAUSE</button> 
+    <div class="bottom-nav-container">
+        <a href="art.html" class="nav-action-link text-2xl sm:text-3xl md:text-4xl lg:text-5xl flash-link">ART</a>
+        <a href="science.html" class="nav-action-link text-2xl sm:text-3xl md:text-4xl lg:text-5xl flash-link">SCIENCE</a>
+    </div>
+</main>
+
+<footer class="bg-black text-center py-3">
+    <p class="text-gray-300 text-xs">&copy; <span id="currentYear"></span> Yuxi Chen. All rights reserved.</p>
+    <p class="text-xs text-gray-300"><a href="https://en.wikipedia.org/wiki/List_of_chaotic_maps" target="_blank" rel="noopener noreferrer">Chaotic Systems Inspiration</a></p>
+    <p class="text-xs text-gray-300">Powered by GitHub Pages & Tailwind CSS</p>
+</footer>
+
+<script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    let scene, camera, renderer, line, trajectoryPoints, headSphere, geometryCenter;
+    let orbitRadius = 25;
+    let currentHeadIndex = 0; 
+    const pointsToAdvanceWhenUpdating = 3; 
+    const ADVANCE_EVERY_N_FRAMES = 2;    
+    let frameCounterForSpeedControl = 0; 
+    let animationFrameId;
+    const headColor = 0xFF00FF; 
+    const MAX_VISIBLE_LINE_POINTS = 7000; 
+
+    let isAnimationPaused = false;
+
+    const trajectoryContainer = document.getElementById('trajectoryContainer');
+    const animationControlButton = document.getElementById('animationControlButton'); 
+    const flashEffectElement = document.getElementById('pageFlashEffect');
+    
+    animationControlButton.addEventListener('click', () => {
+        isAnimationPaused = !isAnimationPaused;
+        animationControlButton.textContent = isAnimationPaused ? "PLAY" : "PAUSE";
+        if (!isAnimationPaused && !animationFrameId) { 
+            animate(); 
+        }
+    });
+
+    // Flash effect for specified links
+    const flashLinks = document.querySelectorAll('.flash-link');
+    flashLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetUrl = this.href;
+
+            flashEffectElement.style.display = 'block';
+            // Force reflow to ensure display:block is applied before opacity transition starts
+            flashEffectElement.offsetHeight; // eslint-disable-line no-unused-expressions 
+            
+            flashEffectElement.style.transition = 'opacity 0.05s ease-out'; // Quick fade in
+            flashEffectElement.style.opacity = '1';
+
+            setTimeout(() => {
+                flashEffectElement.style.transition = 'opacity 0.15s ease-in'; // Slightly slower fade out
+                flashEffectElement.style.opacity = '0';
+            }, 50); // Duration flash is fully visible
+
+            setTimeout(() => {
+                flashEffectElement.style.display = 'none';
+                window.location.href = targetUrl;
+            }, 200); // Total time for flash effect (50ms visible + 150ms fade out)
+        });
+    });
+
+
+    function initThreeJS() {
+        scene = new THREE.Scene();
+        const aspect = trajectoryContainer.clientWidth / trajectoryContainer.clientHeight || 1;
+        camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 2000);
+        camera.position.z = 30;
+        
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(trajectoryContainer.clientWidth || window.innerWidth, trajectoryContainer.clientHeight || window.innerHeight);
+        trajectoryContainer.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+        const headGeometry = new THREE.SphereGeometry(0.3, 16, 16); 
+        const headMaterial = new THREE.MeshPhongMaterial({ color: headColor, emissive: headColor, emissiveIntensity: 0.8 });
+        headSphere = new THREE.Mesh(headGeometry, headMaterial);
+        headSphere.visible = false;
+        scene.add(headSphere);
+
+        window.addEventListener('resize', onWindowResize, false);
+    }
+
+    function onWindowResize() {
+        if (!camera || !renderer || !trajectoryContainer) return;
+        
+        const width = window.innerWidth; 
+        const height = window.innerHeight;
+
+        if (width > 0 && height > 0) {
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+    }
+
+    // --- Chaotic System Definitions ---
+    function generateLorenzTrajectory(params) {
+        let { x0, y0, z0, sigma, rho, beta, dt, steps } = params;
+        let x = x0, y = y0, z = z0;
+        const points = [];
+        for (let i = 0; i < steps; i++) {
+            points.push({ x: x, y: y, z: z });
+            const dx = sigma * (y - x); const dy = x * (rho - z) - y; const dz = x * y - beta * z;
+            x += dx * dt; y += dy * dt; z += dz * dt;
+        }
+        return points;
+    }
+    function generateRosslerTrajectory(params) {
+        let { x0, y0, z0, a, b, c, dt, steps } = params;
+        let x = x0, y = y0, z = z0;
+        const points = [];
+        for (let i = 0; i < steps; i++) {
+            points.push({ x: x, y: y, z: z });
+            const dx = -(y + z); const dy = x + a * y; const dz = b + z * (x - c);
+            x += dx * dt; y += dy * dt; z += dz * dt;
+        }
+        return points;
+    }
+    function generateDuffingTrajectory(params) {
+        let { x0, y0, alpha, beta, delta, gamma, omega, dt, steps } = params;
+        let x = x0, y = y0; const points = [];
+        for (let t_sim = 0; t_sim < steps * dt; t_sim += dt) {
+            points.push({ x: x, y: y, z: 0 });
+            const dx = y; const dy = gamma * Math.cos(omega * t_sim) - delta * y - alpha * x - beta * x * x * x;
+            x += dx * dt; y += dy * dt;
+        }
+        return points;
+    }
+
+    const chaoticSystems = [
+        { name: "Lorenz Attractor", generator: generateLorenzTrajectory, defaultParams: { sigma: 10, rho: 28, beta: 8/3, dt: 0.01, steps: 70000 }, initialConditionsRange: { x0: [-15,15], y0: [-15,15], z0: [10,40] } },
+        { name: "Rössler Attractor", generator: generateRosslerTrajectory, defaultParams: { a: 0.1, b: 0.1, c: 14, dt: 0.015, steps: 100000 }, initialConditionsRange: { x0: [-8,8], y0: [-8,8], z0: [0,8] } },
+        { name: "Duffing Equation", generator: generateDuffingTrajectory, defaultParams: { alpha: -1, beta: 1, delta: 0.15, gamma: 0.35, omega: 1.0, dt: 0.02, steps: 80000 }, initialConditionsRange: { x0: [-1.5,1.5], y0: [-1.5,1.5] } }
+    ];
+
+    function getRandomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+    function selectAndGenerateRandomSystem() { 
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        headSphere.visible = false;
+        frameCounterForSpeedControl = 0; 
+        isAnimationPaused = false; 
+        animationControlButton.textContent = "PAUSE";
+
+        const randomIndex = Math.floor(Math.random() * chaoticSystems.length);
+        const system = chaoticSystems[randomIndex];
+        const initialConditions = {};
+        for (const key in system.initialConditionsRange) {
+            initialConditions[key] = getRandomInRange(system.initialConditionsRange[key][0], system.initialConditionsRange[key][1]);
+        }
+        const params = { ...system.defaultParams, ...initialConditions };
+        console.log(`Generating ${system.name}`);
+        trajectoryPoints = system.generator(params); 
+        
+        setup3DLineAndCamera(trajectoryPoints); 
+        currentHeadIndex = pointsToAdvanceWhenUpdating; 
+        if (trajectoryPoints.length < currentHeadIndex) { 
+            currentHeadIndex = trajectoryPoints.length;
+        }
+        if (pointsToAdvanceWhenUpdating === 1 && trajectoryPoints.length >= 2) { 
+             currentHeadIndex = Math.max(2, pointsToAdvanceWhenUpdating); 
+        } else if (pointsToAdvanceWhenUpdating === 1 && trajectoryPoints.length === 1) {
+            currentHeadIndex = 1;
+        }
+        
+        animate();
+    }
+
+    function setup3DLineAndCamera(points) {
+        if (!points || points.length === 0) return;
+
+        if (line) {
+            scene.remove(line);
+            line.geometry.dispose();
+            line.material.dispose();
+        }
+
+        const allThreePoints = points.map(p => new THREE.Vector3(p.x, p.y, p.z));
+        const fullGeometry = new THREE.BufferGeometry().setFromPoints(allThreePoints);
+        
+        fullGeometry.computeBoundingSphere();
+        geometryCenter = fullGeometry.boundingSphere.center.clone(); 
+
+        const material = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1 });
+        line = new THREE.Line(fullGeometry, material);
+        line.geometry.translate(-geometryCenter.x, -geometryCenter.y, -geometryCenter.z); 
+        line.geometry.setDrawRange(0, 0); 
+        scene.add(line);
+        
+        const radius = fullGeometry.boundingSphere.radius > 0 ? fullGeometry.boundingSphere.radius : 10;
+        headSphere.scale.set(1,1,1); 
+        const sphereScale = Math.max(0.1, radius * 0.015) * 10; 
+        headSphere.scale.set(sphereScale, sphereScale, sphereScale);
+
+        const fov = camera.fov * (Math.PI / 180);
+        let distance = radius / Math.sin(fov / 2);
+        distance = Math.max(distance, radius * 1.8, 30); 
+        
+        camera.position.set(0, 0, distance * 1.2);
+        camera.lookAt(scene.position); 
+        orbitRadius = distance * 1.2;
+    }
+    
+    function animate() {
+        animationFrameId = requestAnimationFrame(animate); 
+        
+        if (!isAnimationPaused) { 
+            frameCounterForSpeedControl++;
+
+            if (line && trajectoryPoints && trajectoryPoints.length > 0) {
+                if (currentHeadIndex < trajectoryPoints.length) { 
+                    if (frameCounterForSpeedControl % ADVANCE_EVERY_N_FRAMES === 0) {
+                        currentHeadIndex = Math.min(currentHeadIndex + pointsToAdvanceWhenUpdating, trajectoryPoints.length);
+                    }
+                }
+                
+                const drawRangeStart = Math.max(0, currentHeadIndex - MAX_VISIBLE_LINE_POINTS);
+                const drawRangeCount = Math.max(0, currentHeadIndex - drawRangeStart); 
+                
+                if (drawRangeCount >= 2) { 
+                    line.geometry.setDrawRange(drawRangeStart, drawRangeCount);
+                } else if (drawRangeCount === 1 && drawRangeStart === 0) { 
+                     line.geometry.setDrawRange(0, 1); 
+                } else {
+                     line.geometry.setDrawRange(0,0); 
+                }
+                
+                if (currentHeadIndex > 0 && currentHeadIndex <= trajectoryPoints.length) {
+                    const headPointData = trajectoryPoints[currentHeadIndex - 1];
+                    const centeredX = headPointData.x - geometryCenter.x;
+                    const centeredY = headPointData.y - geometryCenter.y;
+                    const centeredZ = headPointData.z - geometryCenter.z;
+
+                    headSphere.position.set(centeredX, centeredY, centeredZ);
+                    headSphere.visible = true;
+                } else {
+                    headSphere.visible = false;
+                }
+            }
+            if (camera && scene) { 
+                const time = Date.now() * 0.0001; 
+                camera.position.x = Math.cos(time) * orbitRadius * 0.7;
+                camera.position.y = Math.sin(time * 0.5) * orbitRadius * 0.4; 
+                camera.position.z = Math.sin(time) * orbitRadius * 0.7 + orbitRadius * 0.6;
+                camera.lookAt(scene.position); 
+            }
+        } 
+
+        if (scene && camera && renderer) { 
+            renderer.render(scene, camera);
+        }
+    }
+
+    if (trajectoryContainer) {
+        initThreeJS(); 
+        onWindowResize(); 
+        selectAndGenerateRandomSystem(); 
+    } else {
+        console.error("Trajectory container not found.");
+    }
+
+</script>
+</body>
+</html>
